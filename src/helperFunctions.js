@@ -102,19 +102,21 @@ const randomiseDirection = ({ cellId, randomDirection, type }) => {
     switch (randomDirection) {
         case 1: //up
             cellIdArr[0] = alphabet[alphabet.indexOf(cellIdArr[0]) + 1] || 0;
-            if (type.includes(cellIdArr.join("-"))) return randomiseDirection({ cellId, randomDirection: 2, type })
+            if (type.includes(cellIdArr.join("-"))) return randomiseDirection({ cellId, randomDirection: Math.floor(Math.random() * 3) + 2, type })
             break;
         case 2: //down
+            var numbers = [1, 3, 4];
             cellIdArr[0] = alphabet[alphabet.indexOf(cellIdArr[0]) - 1] || 0;
-            if (type.includes(cellIdArr.join("-"))) return randomiseDirection({ cellId, randomDirection: 1, type })
+            if (type.includes(cellIdArr.join("-"))) return randomiseDirection({ cellId, randomDirection: numbers[Math.floor(Math.random() * numbers.length)], type })
             break;
         case 3: //right
+            var numbers = [1, 2, 4];
             cellIdArr[1] = parseInt(cellIdArr[1]) + 1
-            if (type.includes(cellIdArr.join("-"))) return randomiseDirection({ cellId, randomDirection: 4, type })
+            if (type.includes(cellIdArr.join("-"))) return randomiseDirection({ cellId, randomDirection: numbers[Math.floor(Math.random() * numbers.length)], type })
             break;
         case 4: //left
             cellIdArr[1] = parseInt(cellIdArr[1]) - 1
-            if (type.includes(cellIdArr.join("-"))) return randomiseDirection({ cellId, randomDirection: 3, type })
+            if (type.includes(cellIdArr.join("-"))) return randomiseDirection({ cellId, randomDirection: Math.floor(Math.random() * 3) + 1, type })
             break;
         default:
             break;
