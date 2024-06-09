@@ -1,4 +1,6 @@
-import { GameData, tileType } from "./data/GameData"
+import ReactDOMServer from 'react-dom/server';
+import { GameData, tileType } from "./data/GameData";
+
 
 export const alphabet = [
     'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
@@ -6,66 +8,66 @@ export const alphabet = [
 ];
 
 export const populateCells = async ({ gameData, setGameData }) => {
-    const types = { rock: [], river: [], forest: [] }
+    const types = { rock: [], river: [], forest: [] };
     var cells = chunkArray(getAllMapCells(), 40);
 
-    cells = cells.map(x => (
-        x.map(e => {
+    cells = cells.map(row => (
+        row.map(e => {
             const randomDirection = Math.floor(Math.random() * 4) + 1;
             const randomType = Math.floor(Math.random() * 50) + 1;
-            var type = tileType.grass;
+            let type = tileType.grass; // Default type
 
+            // Handle existing types
             if (types.rock.includes(e.id)) {
-                console.log("rock includes")
-                var rd = randomiseDirection({ cellId: e.id, randomDirection, type: types.rock })
-                types.rock.push(rd)
-                return { cell: e, info: tileType.rock }
+                const rd = randomiseDirection({ cellId: e.id, randomDirection, type: types.rock });
+                types.rock.push(rd);
+                return { cell: e, location: e.id, info: tileType.rock };
             }
             if (types.river.includes(e.id)) {
-                console.log("river includes")
-                var rd = randomiseDirection({ cellId: e.id, randomDirection, type: types.river })
-                types.river.push(rd)
-                return { cell: e, info: tileType.river }
+                const rd = randomiseDirection({ cellId: e.id, randomDirection, type: types.river });
+                types.river.push(rd);
+                return { cell: e, location: e.id, info: tileType.river };
             }
             if (types.forest.includes(e.id)) {
-                console.log("forest includes")
-                var rd = randomiseDirection({ cellId: e.id, randomDirection, type: types.forest })
-                types.forest.push(rd)
-                return { cell: e, info: tileType.forest }
+                const rd = randomiseDirection({ cellId: e.id, randomDirection, type: types.forest });
+                types.forest.push(rd);
+                return { cell: e, location: e.id, info: tileType.forest };
             }
 
+            // Handle new types based on randomType
             switch (randomType) {
                 case 1:
-                    types.rock.push(e.id)
-                    type = tileType.rock
-                    var rd = randomiseDirection({ cellId: e.id, randomDirection, type: types.rock })
-                    types.rock.push(rd)
+                    types.rock.push(e.id);
+                    type = tileType.rock;
+                    const rockRd = randomiseDirection({ cellId: e.id, randomDirection, type: types.rock });
+                    types.rock.push(rockRd);
                     break;
                 case 2:
-                    types.river.push(e.id)
-                    type = tileType.river
-                    var rd = randomiseDirection({ cellId: e.id, randomDirection, type: types.river })
-                    types.river.push(rd)
+                    types.river.push(e.id);
+                    type = tileType.river;
+                    const riverRd = randomiseDirection({ cellId: e.id, randomDirection, type: types.river });
+                    types.river.push(riverRd);
                     break;
                 case 3:
-                    types.forest.push(e.id)
-                    type = tileType.forest
-                    var rd = randomiseDirection({ cellId: e.id, randomDirection, type: types.forest })
-                    types.forest.push(rd)
+                    types.forest.push(e.id);
+                    type = tileType.forest;
+                    const forestRd = randomiseDirection({ cellId: e.id, randomDirection, type: types.forest });
+                    types.forest.push(forestRd);
                     break;
                 default:
                     break;
             }
 
-            return { cell: e, info: type }
+            return { cell: e, location: e.id, info: type };
         })
-    ))
-    console.log({ types })
-    setGameData({ ...GameData, cellInformation: cells })
-}
+    ));
+
+    console.log("Final cells data:", cells);
+    setGameData({ ...gameData, cellInformation: cells });
+};
+
 
 export const fillInCells = async ({ gameData }) => {
-    console.log({ gameData })
     gameData.cellInformation.forEach(row => {
         row.forEach(e => {
             setBackground({ cell: e.cell, type: e.info.type })
@@ -73,10 +75,47 @@ export const fillInCells = async ({ gameData }) => {
     })
 }
 
-const getCell = ({ id, gameData }) => {
-    return gameData.cellInformation.map(row => row.filter(e => (
-        e.id === id
-    )))
+export const getCell = ({ id, gameData }) => {
+    var cell;
+    gameData.cellInformation.forEach(row => {
+        row.forEach(e => {
+            if (e.cell.id === id) {
+                cell = e
+            }
+        })
+    })
+    return cell;
+}
+
+export const upgradeCell = ({ cell, gameData, setGameData, selectedUpgrade }) => {
+    console.log({ cell, gameData, setGameData, selectedUpgrade })
+
+    //selectedUpgrade.produces => {food: 5, population2} can have food, population, stone, wood, money
+    cell.info.applied.push(selectedUpgrade)
+
+    // Create a copy of the produces object
+    let newProduces = { ...gameData.produces };
+
+    // Iterate over the keys in selectedUpgrade.produces and update newProduces
+    Object.keys(selectedUpgrade.produces).forEach((key) => {
+        newProduces[key] = (newProduces[key] || 0) + selectedUpgrade.produces[key];
+    });
+
+    setGameData({
+        ...gameData,
+        cellInformation: gameData.cellInformation.map(e => {
+            e.map(i => {
+                if (i.location === cell.location) {
+                    i = cell;
+                    const svgString = ReactDOMServer.renderToString(selectedUpgrade.icon(10));
+                    i.cell.innerHTML = svgString;
+                }
+                return i
+            })
+            return e
+        }),
+        produces: newProduces
+    })
 }
 
 const setBackground = ({ cell, type }) => {
@@ -96,7 +135,6 @@ const setBackground = ({ cell, type }) => {
 }
 
 const randomiseDirection = ({ cellId, randomDirection, type }) => {
-    console.log({ cellId, randomDirection, type })
     var cellIdArr = cellId.split("-")
 
     switch (randomDirection) {

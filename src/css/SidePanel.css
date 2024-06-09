@@ -1,0 +1,99 @@
+.SidePanelContainer {
+    width: 27%;
+    border: solid black;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: space-around;
+    align-items: flex-start;
+    height: 637px;
+}
+
+.SidePanel {
+    width: 99%;
+    border: solid black;
+    height: 92%;
+}
+
+.SideInfo {
+    height: 50%;
+    overflow: scroll;
+    padding: 5px;
+}
+
+.EndTurnDiv {
+    border: solid black;
+    width: 99%;
+    background: radial-gradient(circle, rgba(121, 9, 25, 1) 16%, rgba(255, 0, 54, 1) 51%, rgba(2, 0, 36, 1) 74%);
+    text-align: center;
+    color: white;
+    cursor: pointer;
+}
+
+.EndTurnDiv:hover {
+    background: radial-gradient(circle, rgba(9, 118, 121, 1) 20%, rgba(0, 7, 255, 1) 50%, rgba(8, 7, 37, 1) 74%);
+}
+
+.EndTurnDiv>h2 {
+    margin: 5px;
+}
+
+.BuildablesList {
+    background-color: antiquewhite;
+    border-bottom: solid black;
+}
+
+.BuildablesList:hover {}
+
+.BuildablesList>h5 {
+    margin: 10px;
+    font-size: 15px;
+}
+
+.BuildablesList>h6 {
+    font-size: 12px;
+}
+
+.BuildablesList>ul>li {
+    font-size: 12px;
+}
+
+.BuildablesList>h6,
+.BuildablesList>ul,
+.BuildablesList>ul>li {
+    margin: 0;
+    margin-left: 15px;
+}
+
+.ActionDiv {
+    background-color: antiquewhite;
+    border: solid black;
+    margin: 5px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: flex-start;
+    align-items: flex-start;
+    cursor: pointer;
+}
+
+.ActionDiv:hover {
+    box-shadow: 5px 3px;
+}
+
+.ActionName {
+    margin: 15px;
+    margin-left: 5px;
+}
+
+.ProducesDiv>p,
+.ConsumesDiv>p,
+.ProducesDiv>h6,
+.ConsumesDiv>h6 {
+    font-size: 0.67em;
+    margin: 5px;
+    margin-left: 10px;
+}

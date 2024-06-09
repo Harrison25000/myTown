@@ -1,0 +1,33 @@
+.Width-25per {
+    width: 25%;
+}
+
+.Width-100per {
+    width: 100%;
+}
+
+.Flex-Row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: space-around;
+    align-items: flex-start;
+}
+
+.Flex-Column {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: space-around;
+    align-items: flex-start;
+}
+
+.Margin-Left-5px {
+    margin-left: 5px;
+}
+
+.Margin-5px {
+    margin: 5px;
+}

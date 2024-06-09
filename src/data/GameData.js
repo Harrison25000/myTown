@@ -14,24 +14,29 @@ export const GameData =
         stone: 0,
         wood: 0,
     },
-    cellInformation: []
+    cellInformation: [],
+    produces: { food: 0, population: 0, stone: 0, water: 0, money: 0 }
 }
 
 export const tileType = {
     grass: {
         type: "grass",
-        actions: grassActions
+        actions: grassActions,
+        applied: []
     },
     rock: {
         type: "rock",
-        actions: rockActions
+        actions: rockActions,
+        applied: []
     },
     forest: {
         type: "forest",
-        actions: forestActions
+        actions: forestActions,
+        applied: []
     },
     river: {
         type: "river",
-        actions: riverActions
+        actions: riverActions,
+        applied: []
     }
 }

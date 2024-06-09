@@ -1,0 +1,12 @@
+.GameResources {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: space-around;
+    align-items: center;
+    font-size: 12px;
+    font-weight: bold;
+    border-top: solid black;
+    border-bottom: solid black;
+}

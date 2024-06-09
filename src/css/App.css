@@ -1,5 +1,11 @@
 .App {
   padding: 2%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-content: center;
+  justify-content: space-between;
+  align-items: flex-start;
 }
 
 table>tr>td {
@@ -25,4 +31,6 @@ table {
 
 .OutsideMap {
   background-color: white;
+  text-align: center;
+  font-weight: 600;
 }
